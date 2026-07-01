@@ -1,13 +1,17 @@
 # pyrefly: ignore [missing-import]
 from qdrant_client import QdrantClient, models
 from sentence_transformers import SentenceTransformer
+# pyrefly: ignore [missing-import]
+from flashrank import Ranker, RerankRequest
+
+
 
 model = SentenceTransformer("google/embeddinggemma-300m")
 
 Q_client = QdrantClient(url='http://localhost:6333')
 COLLECTION_NAME = "it_support"
 
-dummy_query = input()
+dummy_query = "What is an error?"
 
 embedded_query = model.encode(dummy_query, normalize_embeddings=True, show_progress_bar=True).tolist()
 
@@ -25,7 +29,7 @@ results = Q_client.query_points(
             limit=10
         )
     ],
-    query=models.FusionQuery(fusion=models.Fusion.RRF),
+    # query=models.FusionQuery(fusion=models.Fusion.RRF),
     limit=10
 )
 

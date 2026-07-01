@@ -18,6 +18,8 @@ First, activate the virtual environment:
 
 ## Pipeline
 
+![Hybrid RAG Ingestion Pipeline](./images/pipeline.svg)
+
 The system consists of a two-step pipeline:
 
 ### 1. Ingestion

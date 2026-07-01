@@ -1,0 +1,133 @@
+<svg width="520" height="980" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12"
+            refX="6" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#4F46E5"/>
+    </marker>
+
+    <style>
+      text{
+        font-family:Arial, Helvetica, sans-serif;
+      }
+
+      .title{
+        font-size:16px;
+        font-weight:bold;
+        text-anchor:middle;
+        fill:#111827;
+      }
+
+      .body{
+        font-size:13px;
+        text-anchor:middle;
+        fill:#374151;
+      }
+
+      .arrow{
+        stroke:#4F46E5;
+        stroke-width:3;
+        marker-end:url(#arrow);
+      }
+
+      .pdf{
+        fill:#FEE2E2;
+        stroke:#DC2626;
+        stroke-width:2;
+        rx:12;
+      }
+
+      .chunk{
+        fill:#FEF3C7;
+        stroke:#D97706;
+        stroke-width:2;
+        rx:12;
+      }
+
+      .bm25{
+        fill:#DBEAFE;
+        stroke:#2563EB;
+        stroke-width:2;
+        rx:12;
+      }
+
+      .dense{
+        fill:#DCFCE7;
+        stroke:#16A34A;
+        stroke-width:2;
+        rx:12;
+      }
+
+      .merge{
+        fill:#EDE9FE;
+        stroke:#7C3AED;
+        stroke-width:2;
+        rx:12;
+      }
+
+      .pinecone{
+        fill:#CCFBF1;
+        stroke:#0F766E;
+        stroke-width:2;
+        rx:12;
+      }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="260" y="35"
+        style="font-size:22px;font-weight:bold;fill:#111827;text-anchor:middle;">
+        Hybrid RAG Ingestion Pipeline
+  </text>
+
+  <!-- PDF -->
+  <rect class="pdf" x="110" y="70" width="300" height="70"/>
+  <text class="title" x="260" y="100">📄 Medical PDFs</text>
+  <text class="body" x="260" y="122">Source Documents</text>
+
+  <line class="arrow" x1="260" y1="140" x2="260" y2="180"/>
+
+  <!-- Chunk -->
+  <rect class="chunk" x="110" y="180" width="300" height="80"/>
+  <text class="title" x="260" y="210">✂ Document Chunking</text>
+  <text class="body" x="260" y="232">Recursive Character Text Splitter</text>
+
+  <line class="arrow" x1="260" y1="260" x2="260" y2="300"/>
+
+  <!-- BM25 -->
+  <rect class="bm25" x="110" y="300" width="300" height="90"/>
+  <text class="title" x="260" y="330">🔎 Sparse Representation</text>
+  <text class="body" x="260" y="352">BM25 Tokenization</text>
+  <text class="body" x="260" y="372">Sparse Vector Generation</text>
+
+  <line class="arrow" x1="260" y1="390" x2="260" y2="430"/>
+
+  <!-- Dense -->
+  <rect class="dense" x="110" y="430" width="300" height="90"/>
+  <text class="title" x="260" y="460">🧠 Dense Embeddings</text>
+  <text class="body" x="260" y="482">SentenceTransformer</text>
+  <text class="body" x="260" y="502">Dense Vector Generation</text>
+
+  <line class="arrow" x1="260" y1="520" x2="260" y2="560"/>
+
+  <!-- Merge -->
+  <rect class="merge" x="110" y="560" width="300" height="90"/>
+  <text class="title" x="260" y="590">🔀 Hybrid Document</text>
+  <text class="body" x="260" y="612">Dense Vector</text>
+  <text class="body" x="260" y="630">Sparse Vector + Metadata</text>
+
+  <line class="arrow" x1="260" y1="650" x2="260" y2="690"/>
+
+  <!-- Pinecone -->
+  <rect class="pinecone" x="110" y="690" width="300" height="90"/>
+  <text class="title" x="260" y="720">🌲 Pinecone Index</text>
+  <text class="body" x="260" y="742">Hybrid Storage</text>
+  <text class="body" x="260" y="760">Dense + Sparse + Metadata</text>
+
+  <!-- Footer -->
+  <text x="260" y="840"
+        style="font-size:14px;font-weight:bold;text-anchor:middle;fill:#4F46E5;">
+        Documents are now ready for Hybrid Retrieval &amp; Reranking
+  </text>
+
+</svg>
