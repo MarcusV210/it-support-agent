@@ -6,40 +6,44 @@ from flashrank import Ranker, RerankRequest
 
 
 
-model = SentenceTransformer("google/embeddinggemma-300m")
-
-Q_client = QdrantClient(url='http://localhost:6333')
-COLLECTION_NAME = "it_support"
-
-dummy_query = "What is an error?"
-
-embedded_query = model.encode(dummy_query, normalize_embeddings=True, show_progress_bar=True).tolist()
-
-results = Q_client.query_points(
-    collection_name=COLLECTION_NAME,
-    prefetch=[
-        models.Prefetch(
-            query=embedded_query,
-            using="dense",
-            limit=10
-        ),
-        models.Prefetch(
-            query=models.Document(text=dummy_query, model="Qdrant/bm25"),
-            using="bm25",
-            limit=10
-        )
-    ],
-    # query=models.FusionQuery(fusion=models.Fusion.RRF),
-    limit=10
-)
+def hybrid_search(model_name = "google/embeddinggemma-300m", query = "What is an error?", limit = 10):
 
 
-for i, result in enumerate(results.points, start=1):
+    model = SentenceTransformer(model_name)
 
-    print("="*80)
+    Q_client = QdrantClient(url='http://localhost:6333')
+    COLLECTION_NAME = "it_support"
 
-    print(f"Result {i}")
+    embedded_query = model.encode(query, normalize_embeddings=True, show_progress_bar=True).tolist()
 
-    print(f"Score : {result.score:.4f}")
+    dense_results = Q_client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=embedded_query,
+        using="dense",
+        limit=10
+    )
 
-    print(result.payload["content"])
+    bm25_results = Q_client.query_points(
+        collection_name=COLLECTION_NAME,
+        query=models.Document(text=query, model="Qdrant/bm25"),
+        using="bm25",
+        limit=10
+    )
+
+    # Deduplicate by point id
+    seen = set()
+    all_results = []
+    for point in dense_results.points + bm25_results.points:
+        if point.id not in seen:
+            seen.add(point.id)
+            all_results.append(point)
+
+    # Rerank with FlashRank
+    ranker = Ranker()
+    rerank_request = RerankRequest(
+        query=query,
+        passages=[{"id": p.id, "text": p.payload["content"]} for p in all_results]
+    )
+    reranked = ranker.rerank(rerank_request)[:10]
+
+    return reranked
