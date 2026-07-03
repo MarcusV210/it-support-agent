@@ -20,8 +20,8 @@ def triage(state: AgentState):
     return {"issue_type": response.content.strip()}
 
 def retrieve(state: AgentState):
-    query = state["messages"][-1].content
-    chunks = hybrid_search(query)
+    query = state["messages"][-1].content   
+    chunks = hybrid_search(query = query)
     return {"chunks": chunks}
 
 def reason(state: AgentState):

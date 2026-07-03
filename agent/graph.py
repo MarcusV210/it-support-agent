@@ -1,12 +1,14 @@
 # pyrefly: ignore [missing-import]
 from langgraph.graph import StateGraph, END
+# pyrefly: ignore [missing-import]
+from langgraph.checkpoint.memory import MemorySaver
 from agent.state import AgentState
 from agent.nodes import clarify, triage, retrieve, reason, deliver_step, verify, resolve, escalate
 
 def route_verify(state: AgentState):
     if state["resolved"]:
         return "resolve"
-    if state["steps_tried"] >= 5:
+    if state["steps_tried"] >= 10: # steps of tries
         return "escalate"
     return "deliver_step"
 
@@ -33,4 +35,7 @@ graph.add_edge("escalate",     END)
 
 graph.add_conditional_edges("verify", route_verify)
 
-agent = graph.compile()
+agent = graph.compile(
+    checkpointer = MemorySaver(), 
+    interrupt_after=["clarify"] # Waits for user input
+)
