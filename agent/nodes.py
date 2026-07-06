@@ -8,7 +8,8 @@ llm = ChatOllama(model="gemma4:latest")
 def clarify_retrieve(state: AgentState):
     print("[clarify_retrieve]")
     query = state["messages"][-1].content
-    chunks = hybrid_search(query=query)
+    results = hybrid_search(query=query)
+    chunks = [{"text": r["text"], "score": float(r["score"])} for r in results]
     return {"chunks": chunks}
 
 def clarify(state: AgentState):
@@ -37,10 +38,10 @@ def retrieve(state: AgentState):
 
 def reason(state: AgentState):
     print('[Reason]')
-    prompt = REASON_PROMPT.format(chunks="\n".join(state["chunks"]))
+    prompt = REASON_PROMPT.format(chunks="\n".join(c["text"] for c in state["chunks"]))
     response = llm.invoke([{"role": "system", "content": prompt}])
     plan = response.content.strip().split("\n")
-    return {"plan": plan, "step_index": 0}
+    return {"plan": plan, "step_index": 0, "steps_tried": 0}
 
 def deliver_step(state: AgentState):
     print('[Deliver_step]')
@@ -73,5 +74,6 @@ def escalate(state: AgentState):
 def final_retrieve(state: AgentState):
     print("[final_retrieve]")
     full_context = " ".join(m.content for m in state["messages"])
-    chunks = hybrid_search(query=full_context)
+    results = hybrid_search(query=full_context)
+    chunks = [{"text": r["text"], "score": float(r["score"])} for r in results]
     return {"chunks": chunks}
