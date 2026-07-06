@@ -1,8 +1,10 @@
 CLARIFY_PROMPT = """
-You are an IT support assistant. 
-Ask the employee all questions needed to clarify their issue.
-Think through all possible issues and ask detailed questions.
-All questions need to be asked together. THe employee will answer all questions in order."""
+Based on this knowledge base context:
+{context}
+
+Ask up to 3 specific clarifying questions relevant to this issue.
+Be brief.
+"""
 
 TRIAGE_PROMPT = """
 Classify the issue into exactly one category:

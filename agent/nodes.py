@@ -5,10 +5,18 @@ from langchain_ollama import ChatOllama
 
 llm = ChatOllama(model="gemma4:latest")
 
+def clarify_retrieve(state: AgentState):
+    print("[clarify_retrieve]")
+    query = state["messages"][-1].content
+    chunks = hybrid_search(query=query)
+    return {"chunks": chunks}
+
 def clarify(state: AgentState):
-    print('[Clarify]')
+    print("[clarify]")
+    context = "\n".join(c["text"] for c in state["chunks"])
+    prompt = CLARIFY_PROMPT.format(context=context)
     response = llm.invoke([
-        {"role": "system", "content": CLARIFY_PROMPT},
+        {"role": "system", "content": prompt},
         *state["messages"]
     ])
     return {"messages": [response]}
@@ -61,3 +69,9 @@ def escalate(state: AgentState):
     prompt = ESCALATE_PROMPT
     response = llm.invoke([{"role": "system", "content": prompt}])
     return {"messages": [response]}
+
+def final_retrieve(state: AgentState):
+    print("[final_retrieve]")
+    full_context = " ".join(m.content for m in state["messages"])
+    chunks = hybrid_search(query=full_context)
+    return {"chunks": chunks}
