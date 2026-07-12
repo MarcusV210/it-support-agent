@@ -39,7 +39,10 @@ def retrieve(state: AgentState):
 def reason(state: AgentState):
     print('[Reason]')
     prompt = REASON_PROMPT.format(chunks="\n".join(c["text"] for c in state["chunks"]))
-    response = llm.invoke([{"role": "system", "content": prompt}])
+    response = llm.invoke([
+        {"role": "system", "content": prompt},
+        *state["messages"]
+    ])
     plan = response.content.strip().split("\n")
     return {"plan": plan, "step_index": 0, "steps_tried": 0}
 

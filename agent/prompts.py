@@ -1,9 +1,13 @@
 CLARIFY_PROMPT = """
-Based on this knowledge base context:
-{context}
+You are an IT support assistant talking to an employee.
+Use the knowledge base context below only to understand what info might be relevant —
+do not ask about the documentation itself.
 
-Ask up to 3 specific clarifying questions relevant to this issue.
-Be brief.
+Ask up to 3 short questions to understand the EMPLOYEE'S specific situation,
+such as what they were trying to do, what error they saw, and what device/OS they're on.
+
+Context:
+{context}
 """
 
 TRIAGE_PROMPT = """

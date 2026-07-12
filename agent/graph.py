@@ -4,6 +4,10 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
 from agent.state import AgentState
 from agent.nodes import clarify_retrieve, clarify, triage, final_retrieve, reason, deliver_step, verify, resolve, escalate
+import os 
+import sqlite3
+# pyrefly: ignore [missing-import]
+from langgraph.checkpoint.sqlite import SqliteSaver
 
 def route_verify(state: AgentState):
     if state["resolved"]:
@@ -39,7 +43,14 @@ graph.add_edge("escalate",         END)
 
 graph.add_conditional_edges("verify", route_verify)
 
+
+# Persistency across server restarts
+os.makedirs("storage", exist_ok=True)
+conn = sqlite3.connect("storage/checkpoints.db", check_same_thread=False)
+checkpointer = SqliteSaver(conn)
+
+
 agent = graph.compile(
-    checkpointer=MemorySaver(),
+    checkpointer = checkpointer,
     interrupt_after=["clarify", "deliver_step"]
 )
