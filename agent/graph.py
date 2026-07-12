@@ -8,6 +8,8 @@ from agent.nodes import clarify_retrieve, clarify, triage, final_retrieve, reaso
 def route_verify(state: AgentState):
     if state["resolved"]:
         return "resolve"
+    if state["step_index"] >= len(state["plan"]) - 1:
+        return "escalate"
     if state["steps_tried"] >= 10:
         return "escalate"
     return "deliver_step"
@@ -39,5 +41,5 @@ graph.add_conditional_edges("verify", route_verify)
 
 agent = graph.compile(
     checkpointer=MemorySaver(),
-    interrupt_after=["clarify"]
+    interrupt_after=["clarify", "deliver_step"]
 )

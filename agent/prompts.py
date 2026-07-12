@@ -28,8 +28,14 @@ Be calm, clear, and specific. State what to do and what to expect.
 """
 
 VERIFY_PROMPT = """
-The employee replied: "{last_message}"
-Did the step work? Reply with exactly one word: yes, no, or unclear.
+The employee was asked to try a troubleshooting step and replied: "{last_message}"
+
+Determine one of these:
+- "resolved" - if they explicitly say the issue is now fixed/working
+- "continue" - if they just confirm they did the step and are ready for the next one
+- "failed" - if they say the step did not fix the issue
+
+Reply with exactly one word: resolved, continue, or failed.
 """
 
 ESCALATE_PROMPT = """

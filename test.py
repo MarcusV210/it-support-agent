@@ -1,6 +1,7 @@
 from agent.graph import agent
+import uuid
 
-config = {"configurable": {"thread_id": "session-1"}}
+config = {"configurable": {"thread_id": str(uuid.uuid4())}}
 
 state = agent.invoke(
     {"messages" : [{"role": "user", "content": input("You:")}]},

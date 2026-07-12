@@ -58,7 +58,8 @@ def verify(state: AgentState):
     last = state["messages"][-1].content
     prompt = VERIFY_PROMPT.format(last_message=last)
     response = llm.invoke([{"role": "system", "content": prompt}])
-    resolved = response.content.strip().lower() == "yes"
+    result = response.content.strip().lower()
+    resolved = result == "resolved"
     return {"resolved": resolved, "step_index": state["step_index"] + 1}
 
 def resolve(state: AgentState):
