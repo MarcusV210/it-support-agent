@@ -1,9 +1,27 @@
 from agent.state import AgentState
 from agent.prompts import *
 from retrieve import hybrid_search
+# pyrefly: ignore [missing-import]
 from langchain_ollama import ChatOllama
+import json
+from pathlib import Path
+from datetime import datetime
+
 
 llm = ChatOllama(model="gemma4:latest")
+
+LOG_PATH = Path("storage/logs/eval_logs.jsonl")
+LOG_PATH.parent.mkdir(exist_ok=True)
+def log_for_evaluation(question: str, answer: str, context: list[str]):
+    entry = {
+        "question" : question,
+        "answer" : answer, 
+        "context": context,
+        "timestamp": datetime.now()
+    }
+
+    with open(LOG_PATH, "a") as f:
+        f.write(json.dumps(entry) + "\n")
 
 def clarify_retrieve(state: AgentState):
     print("[clarify_retrieve]")
@@ -54,6 +72,10 @@ def deliver_step(state: AgentState):
         {"role": "system", "content": prompt},
         {"role": "user", "content": step}
     ])
+    question = state["messages"][0].content
+    contexts = [c["text"] for c in state["chunks"]]
+    log_for_evaluation(question, response.content, contexts)
+
     return {"messages": [response], "steps_tried": state["steps_tried"] + 1}
 
 def verify(state: AgentState):

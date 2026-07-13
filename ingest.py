@@ -1,10 +1,9 @@
 import uuid
 from pathlib import Path
+# pyrefly: ignore [missing-import]
 from sentence_transformers import SentenceTransformer
-from langchain_text_splitters import (
-    MarkdownHeaderTextSplitter,
-    RecursiveCharacterTextSplitter
-)
+# pyrefly: ignore [missing-import]
+from langchain_text_splitters import MarkdownHeaderTextSplitter, RecursiveCharacterTextSplitter
 # pyrefly: ignore [missing-import]
 from qdrant_client import QdrantClient, models
 
