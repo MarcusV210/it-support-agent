@@ -66,5 +66,4 @@ def main():
     print(f"Flagged (< {THRESHOLD}): {flagged}")
     print(f"Results saved → {RESULTS_PATH}")
 
-if __name__ == "__main__":
-    main()
+main()
