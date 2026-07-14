@@ -1,5 +1,6 @@
 # pyrefly: ignore [missing-import]
 from qdrant_client import QdrantClient, models
+# pyrefly: ignore [missing-import]
 from sentence_transformers import SentenceTransformer
 # pyrefly: ignore [missing-import]
 from flashrank import Ranker, RerankRequest

@@ -17,7 +17,7 @@ def log_for_evaluation(question: str, answer: str, context: list[str]):
         "question" : question,
         "answer" : answer, 
         "context": context,
-        "timestamp": datetime.now()
+        "timestamp": datetime.now().isoformat()
     }
 
     with open(LOG_PATH, "a") as f:
@@ -72,6 +72,7 @@ def deliver_step(state: AgentState):
         {"role": "system", "content": prompt},
         {"role": "user", "content": step}
     ])
+    
     question = state["messages"][0].content
     contexts = [c["text"] for c in state["chunks"]]
     log_for_evaluation(question, response.content, contexts)

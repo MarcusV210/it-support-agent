@@ -19,7 +19,8 @@ def load_logs():
     entries = []
     with open(LOG_PATH) as f:
         for line in f:
-            entries.append(json.loads(line))
+            if line.strip():
+                entries.append(json.loads(line))
     return entries
 
 def main():
@@ -32,7 +33,7 @@ def main():
         {
             "question": e["question"],
             "answer": e["answer"],
-            "contexts": e["contexts"],
+            "contexts": e.get("context", []),
         }
         for e in entries
     ])
