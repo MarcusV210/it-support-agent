@@ -2,3 +2,17 @@ pymupdf4llm
 mammoth
 sentence-transformers
 langchain
+langchain-community
+langchain-text-splitters
+langchain-ollama
+langchain-google-genai
+langgraph
+qdrant-client
+flashrank
+datasets
+ragas
+streamlit
+requests
+fastapi
+uvicorn
+pydantic

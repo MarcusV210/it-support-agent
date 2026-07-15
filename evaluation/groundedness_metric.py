@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 # pyrefly: ignore [missing-import]
 from datasets import Dataset
@@ -9,7 +10,7 @@ from ragas.metrics import faithfulness
 # pyrefly: ignore [missing-import]
 from ragas.llms import LangchainLLMWrapper
 # pyrefly: ignore [missing-import]
-from langchain_ollama import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 LOG_PATH = Path("storage/logs/eval_logs.jsonl")
 RESULTS_PATH = Path("storage/evals/groundedness_results.jsonl")
@@ -39,7 +40,7 @@ def main():
     ])
 
     # Using Qwen3:8b
-    judge_llm = LangchainLLMWrapper(ChatOllama(model="qwen3:8b"))
+    judge_llm = LangchainLLMWrapper(ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key = os.environ['GOOGLE_API_KEY']))
 
     results = evaluate(
         dataset,

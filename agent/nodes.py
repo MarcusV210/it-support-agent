@@ -67,12 +67,15 @@ def reason(state: AgentState):
 def deliver_step(state: AgentState):
     print('[Deliver_step]')
     step = state["plan"][state["step_index"]]
-    prompt = DELIVER_STEP_PROMPT.format(step_index=state["step_index"] + 1)
+    prompt = DELIVER_STEP_PROMPT.format(
+        step_index=state["step_index"] + 1,
+        total_steps=len(state["plan"])
+    )
     response = llm.invoke([
         {"role": "system", "content": prompt},
         {"role": "user", "content": step}
     ])
-    
+
     question = state["messages"][0].content
     contexts = [c["text"] for c in state["chunks"]]
     log_for_evaluation(question, response.content, contexts)

@@ -27,8 +27,9 @@ Context:
 """
 
 DELIVER_STEP_PROMPT = """
-Deliver step {step_index} to the employee in one or two sentences.
-Be calm, clear, and specific. State what to do and what to expect.
+You are delivering step {step_index} of {total_steps} in an already-decided IT troubleshooting plan.
+The plan was already finalized — do not ask the employee for it, and do not reference any other steps.
+Explain ONLY this one step, in one or two calm, clear sentences. State what to do and what to expect.
 """
 
 VERIFY_PROMPT = """
