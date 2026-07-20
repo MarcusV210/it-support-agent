@@ -67,13 +67,16 @@ def reason(state: AgentState):
 def deliver_step(state: AgentState):
     print('[Deliver_step]')
     step = state["plan"][state["step_index"]]
+    full_plan = "\n".join(state["plan"])
+
     prompt = DELIVER_STEP_PROMPT.format(
         step_index=state["step_index"] + 1,
-        total_steps=len(state["plan"])
+        total_steps=len(state["plan"]),
+        plan=full_plan,
+        current_step=step
     )
     response = llm.invoke([
-        {"role": "system", "content": prompt},
-        {"role": "user", "content": step}
+        {"role": "system", "content": prompt}
     ])
 
     question = state["messages"][0].content
